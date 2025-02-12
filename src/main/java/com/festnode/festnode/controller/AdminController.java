@@ -1,6 +1,7 @@
 package com.festnode.festnode.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.festnode.festnode.model.Control;
 import com.festnode.festnode.model.Department;
 import com.festnode.festnode.model.FestDetails;
 import com.festnode.festnode.model.Image;
@@ -33,6 +34,18 @@ public class AdminController {
 
     @Autowired
     public DepartmentService deptService;
+
+    @PostMapping("/controlFest")
+    public ResponseEntity<Control> controlFest(){
+        Control control = festService.festFest();
+        return new ResponseEntity<>(control, HttpStatus.OK);
+    }
+
+    @GetMapping("/festStatus")
+    public ResponseEntity<Boolean> checkFestStatus(){
+        Control control = festService.getFestStatus();
+        return new ResponseEntity<>(control.isActive(), HttpStatus.OK);
+    }
 
 
     @PostMapping("/addFest")

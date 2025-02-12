@@ -2,8 +2,10 @@ package com.festnode.festnode.service;
 
 import com.festnode.festnode.exception.DuplicateFestException;
 import com.festnode.festnode.exception.EntityNotFoundException;
+import com.festnode.festnode.model.Control;
 import com.festnode.festnode.model.FestDetails;
 import com.festnode.festnode.model.Image;
+import com.festnode.festnode.repository.ControlRepository;
 import com.festnode.festnode.repository.FestDetailsRepository;
 import com.festnode.festnode.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class FestManagementService {
 
     @Autowired
     public CloudinaryService cloudinaryService;
+
+    @Autowired
+    public ControlRepository controlRepository;
 
     @Autowired
     public ImageRepository imgRepo;
@@ -51,5 +56,16 @@ public class FestManagementService {
             res = "Fest Deleted Successfully";
         }
         return res;
+    }
+
+    public Control festFest() {
+        Control control = controlRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("Control panel not found!"));
+        control.setActive(!control.isActive()); // Toggle the active state
+        controlRepository.save(control);
+        return control;
+    }
+
+    public Control getFestStatus() {
+        return controlRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("Control panel not found!"));
     }
 }
