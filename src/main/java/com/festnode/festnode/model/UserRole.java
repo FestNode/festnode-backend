@@ -7,12 +7,12 @@ import java.util.Set;
 
 @Getter
 public enum UserRole {
-    SUPER_ADMIN("super_admin"),
-    ADMIN("admin"),
-    CHIEF_CONVENER("chief_convener"),
-    CONVENER("convener"),
-    COORDINATOR("coordinator"),
-    USER("user");
+    SUPER_ADMIN("SUPER_ADMIN"),
+    ADMIN("ADMIN"),
+    CHIEF_CONVENER("CHIEF_CONVENER"),
+    CONVENER("CONVENER"),
+    COORDINATOR("COORDINATOR"),
+    USER("USER");
 
 
     private final String role;

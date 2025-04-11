@@ -36,6 +36,7 @@ public class FestManagementService {
             fest.setFestName(festName);
             fest.setFestDescription(desc);
             fest.setLogo(logo);
+            System.out.println(fest);
             return festRepo.save(fest);
         }
     }

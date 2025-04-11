@@ -12,6 +12,7 @@ import com.festnode.festnode.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/secure")
 public class AdminController {
     @Autowired
     private FestManagementService festService;
@@ -35,19 +36,15 @@ public class AdminController {
     @Autowired
     public DepartmentService deptService;
 
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/controlFest")
     public ResponseEntity<Control> controlFest(){
         Control control = festService.festFest();
         return new ResponseEntity<>(control, HttpStatus.OK);
     }
 
-    @GetMapping("/festStatus")
-    public ResponseEntity<Boolean> checkFestStatus(){
-        Control control = festService.getFestStatus();
-        return new ResponseEntity<>(control.isActive(), HttpStatus.OK);
-    }
 
-
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/addFest")
     public ResponseEntity<FestDetails> addFest(@RequestParam String festName, @RequestParam String desc, @RequestParam MultipartFile multipartFile) throws IOException {
         BufferedImage buffImg = ImageIO.read(multipartFile.getInputStream());
@@ -62,17 +59,15 @@ public class AdminController {
         return new ResponseEntity<>(fest, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/addDepartment")
     public ResponseEntity<Department> addDept(@RequestBody JsonNode node){
         Department department = deptService.createDepartment(node);
         return new ResponseEntity<>(department, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getFestDetails")
-    public ResponseEntity<FestDetails> getFest(){
-        return new ResponseEntity<>(festService.getFestDetails(10001L), HttpStatus.OK);
-    }
 
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/deleteFest")
     public ResponseEntity<String> deleteFest() throws IOException {
         return new ResponseEntity<>(festService.deleteFestDetails(), HttpStatus.OK);
